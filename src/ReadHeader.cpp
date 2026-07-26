@@ -1,7 +1,7 @@
-#include "ReadFile.hpp"
+#include "ReadHeader.hpp"
 
 // fetch metatada from file header
-int ReadFile::fetchMetadata(FileHeader& h, std::ifstream& ifs) {
+int ReadHeader::fetchMetadata(FileHeader& h, std::ifstream& ifs) {
 
 	// RIFF chunk descriptor (always first 12 bytes)
 	ifs.read(h.ChunkID, 4);

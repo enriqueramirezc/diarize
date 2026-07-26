@@ -1,13 +1,13 @@
-#ifndef READFILE_HPP
-#define READFILE_HPP
+#ifndef ReadHeader_HPP
+#define ReadHeader_HPP
 #include <fstream>
 #include <iostream>
 #include <cstring>
 #include "FileHeader.hpp"
 
-class ReadFile {
+class ReadHeader {
  public:
   int fetchMetadata(FileHeader& h, std::ifstream& ifs);
  
 };
-#endif // READFILE_HPP
+#endif // ReadHeader_HPP

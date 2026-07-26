@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cstring>
 #include "FileHeader.hpp"
-#include "ReadFile.hpp"
+#include "ReadHeader.hpp"
 
 int main() {
 
@@ -24,7 +24,7 @@ int main() {
 	std::cout << "Processing " << input << " file" << std::endl;
 
 	FileHeader h;
-	ReadFile in;
+	ReadHeader in;
 
 	if (in.fetchMetadata(h, ifs) == 1) {
 		h.printHeaderInfo();
