@@ -5,6 +5,7 @@
 #include <cstring>
 #include "FileHeader.hpp"
 #include "ReadHeader.hpp"
+#include "ReadData.hpp"
 
 int main() {
 
@@ -28,6 +29,14 @@ int main() {
 
 	if (in.fetchMetadata(h, ifs) == 1) {
 		h.printHeaderInfo();
+	}
+
+	ReadData data;
+
+	if (data.fetchData(h, ifs) == 1) {
+		std::cout << "bien" << std::endl;
+	} else {
+		std::cout << "mal" << std::endl;
 	}
 
 	return 0;
