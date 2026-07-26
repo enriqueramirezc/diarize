@@ -1,7 +1,7 @@
 #ifndef FILEHEADER_HPP
 #define FILEHEADER_HPP
 #include <cstdint>
-
+#include <iostream>
 
 // `.wav` file header
 class FileHeader {
@@ -25,5 +25,7 @@ class FileHeader {
 	// data sub-chunk
     char SubChunk2ID[4];
 	uint32_t SubChunk2Size;
+
+	void printHeaderInfo();
 };
 #endif // FILEHEADER_HPP
