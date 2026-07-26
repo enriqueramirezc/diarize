@@ -1,3 +1,5 @@
+#ifndef FILEHEADER_HPP
+#define FILEHEADER_HPP
 #include <cstdint>
 
 
@@ -24,3 +26,4 @@ class FileHeader {
     char SubChunk2ID[4];
 	uint32_t SubChunk2Size;
 };
+#endif // FILEHEADER_HPP
