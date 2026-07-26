@@ -2,33 +2,12 @@
 #include <fstream>
 #include <string>
 #include <cstdint>
-
-
-// `.wav` file header
-struct header {
-
-	// RIFF chunk descriptor
-	char ChunkID[4];
-	uint32_t ChunkSize;
-	char Format[4];
-
-	// fmt sub-chunk
-	char SubChunk1ID[4];
-	uint32_t SubChunk1Size;
-	uint16_t AudioFormat;
-	uint16_t NumChannels;
-	uint32_t SampleRate;
-	uint32_t ByteRate;
-	uint16_t BlockAlign;
-	uint16_t BitsPerSample;
-
-	// data sub-chunk
-	uint32_t SubChunk2Size;
-};
+#include <cstring>
+#include "FileHeader.hpp"
 
 int main() {
 
-	// Read file
+	// Read file name
 	std::string input;
 	std::cout << "Enter audio file name: " << std::endl;
 	std::getline(std::cin, input);
@@ -44,7 +23,7 @@ int main() {
 	}
 	std::cout << "Good" << std::endl;
 
-	header h;
+	FileHeader h;
 
 	// RIFF chunk descriptor (always first 12 bytes)
 	ifs.read(h.ChunkID, 4);
@@ -70,6 +49,8 @@ int main() {
 
 		// if we find format chunk marker...
 		if (std::string(chunkID, 4) == "fmt ") {
+			std::memcpy(h.SubChunk1ID, chunkID, 4);
+			h.SubChunk1Size = chunkSize;
 			ifs.read(reinterpret_cast<char*>(&h.AudioFormat), 2);
 			ifs.read(reinterpret_cast<char*>(&h.NumChannels), 2);
 			ifs.read(reinterpret_cast<char*>(&h.SampleRate), 4);
@@ -84,10 +65,11 @@ int main() {
 
 		// found data header
 		} else if (std::string(chunkID, 4) == "data") {
+			std::memcpy(h.SubChunk2ID, chunkID, 4);
 			h.SubChunk2Size = chunkSize;
 			foundData = true;
 		} else {
-			// skip other chunks...
+			// skip other chunks (e.g. LIST)...
 			ifs.seekg(chunkSize, std::ios::cur);
 		}
 
@@ -102,11 +84,28 @@ int main() {
 		return 0;
 	}
 
-	std::cout << "Sample rate: " << h.SampleRate << std::endl;
-	std::cout << "Channels: " << h.NumChannels << std::endl;
-	std::cout << "Bits per sample: " << h.BitsPerSample << std::endl;
-	std::cout << "Data size: " << h.SubChunk2Size << std::endl;
+	std::cout << "RIFF chunk ID: " << std::string(h.ChunkID, 4) << std::endl;
+	std::cout << "RIFF chunk size: " << h.ChunkSize << std::endl;
+	std::cout << "RIFF Format: " << std::string(h.Format, 4) << std::endl;
 
+		
+	std::cout << "---------------"<< std::endl;
+
+	std::cout << "fmt id: " << std::string(h.SubChunk1ID, 4) << std::endl;
+	std::cout << "fmt size: " << h.SubChunk1Size << std::endl;
+	std::cout << "fmt audio format: " << h.AudioFormat << std::endl;
+	std::cout << "fmt Channels: " << h.NumChannels << std::endl;
+	std::cout << "fmt Sample rate: " << h.SampleRate << std::endl;
+	std::cout << "fmt byte range: " << h.ByteRate << std::endl;
+	std::cout << "fmt Block align: " << h.BlockAlign << std::endl;
+	std::cout << "fmt Bits per sample: " << h.BitsPerSample << std::endl;
+
+
+	std::cout << "---------------"  << std::endl;
+
+	std::cout << "Data id: " << std::string(h.SubChunk2ID, 4) << std::endl;
+	// 29548544= ChunkSize - 44 (header) - 26 (skipped LIST chunk)
+	std::cout << "Data size: " << h.SubChunk2Size << std::endl; 
 	return 0;
 }
 
