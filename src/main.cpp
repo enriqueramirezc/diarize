@@ -7,12 +7,15 @@
 #include "ReadHeader.hpp"
 #include "ReadData.hpp"
 
-int main() {
+int main(int argc, char *argv[]) {
+
+	if (argc != 2) {
+		std::cout << "Must enter input file name" << std::endl;
+		return 0;
+	}
 
 	// Read file name
-	std::string input;
-	std::cout << "Enter audio file name: " << std::endl;
-	std::getline(std::cin, input);
+	std::string input = argv[1];
 
 	// Open file
 	std::ifstream ifs(input, std::ios::binary);
@@ -33,6 +36,7 @@ int main() {
 
 	ReadData data;
 
+	// Read file body
 	if (data.fetchData(h, ifs) == 1) {
 		std::cout << "bien" << std::endl;
 	} else {

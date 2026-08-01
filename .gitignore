@@ -2,3 +2,4 @@ Audios/
 test/
 bin/
 build/
+.DS_Store

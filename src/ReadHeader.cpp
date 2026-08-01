@@ -48,6 +48,7 @@ int ReadHeader::fetchMetadata(FileHeader& h, std::ifstream& ifs) {
 			std::memcpy(h.SubChunk2ID, chunkID, 4);
 			h.SubChunk2Size = chunkSize;
 			foundData = true;
+			continue; // leave stream positioned at start of sample data
 		} else {
 			// skip other chunks (e.g. LIST)...
             // http://unusedino.de/ec64/technical/formats/wav.html
