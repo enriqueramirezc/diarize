@@ -3,9 +3,8 @@
 #include <string>
 #include <cstdint>
 #include <cstring>
-#include "FileHeader.hpp"
-#include "ReadHeader.hpp"
-#include "ReadData.hpp"
+#include "Wave.hpp"
+#include "ReadFile.hpp"
 
 int main(int argc, char *argv[]) {
 
@@ -27,20 +26,18 @@ int main(int argc, char *argv[]) {
 	}
 	std::cout << "Processing " << input << " file" << std::endl;
 
-	FileHeader h;
-	ReadHeader in;
 
-	if (in.fetchMetadata(h, ifs) == 1) {
-		h.printHeaderInfo();
+	Wave file;
+	ReadFile in;
+	if (in.fetchMetadata(file, ifs) == 1) {
+		file.printHeaderInfo();
 	}
 
-	ReadData data;
-
 	// Read file body
-	if (data.fetchData(h, ifs) == 1) {
-		std::cout << "bien" << std::endl;
+	if (in.fetchData(file, ifs) == 1) {
+		std::cout << "Able to read file data" << std::endl;
 	} else {
-		std::cout << "mal" << std::endl;
+		std::cout << "Unable to read file data" << std::endl;
 	}
 
 	return 0;

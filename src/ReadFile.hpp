@@ -3,11 +3,11 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
-#include "FileHeader.hpp"
+#include "Wave.hpp"
 
-class ReadHeader {
+class ReadFile {
  public:
-  int fetchMetadata(FileHeader& h, std::ifstream& ifs);
- 
+  int fetchMetadata(Wave& h, std::ifstream& ifs);
+  int fetchData(Wave& d,std::ifstream& ifs);
 };
 #endif // ReadHeader_HPP
