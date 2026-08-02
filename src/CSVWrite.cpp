@@ -18,7 +18,7 @@ int CSVWrite::write(const std::string& output, const std::vector<int16_t>& sampl
     // Write header
     file << "Time,Min,Max,numSample\n";
 
-    const std::size_t N = 10; // samples per window
+    const std::size_t N = 100; // samples per window
     for (std::size_t i = 0; i < samples.size(); i += N) {
       std::size_t end = std::min(i + N, samples.size());
 
