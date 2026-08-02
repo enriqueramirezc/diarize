@@ -16,12 +16,21 @@ int CSVWrite::write(const std::string& output, const std::vector<int16_t>& sampl
     }
 
     // Write header
-    file << "Time,Channel1,numSample\n";
+    file << "Time,Min,Max,numSample\n";
 
-    // Write data rows
-    for (std::size_t i = 0; i < samples.size(); i++) {
-        double time = static_cast<double>(i) / sampleRate;
-        file << time << "," << samples[i] << "," << i << "\n";
+    const std::size_t N = 10; // samples per window
+    for (std::size_t i = 0; i < samples.size(); i += N) {
+      std::size_t end = std::min(i + N, samples.size());
+
+      auto minVal = samples[i];
+      auto maxVal = samples[i];
+      for (std::size_t j = i + 1; j < end; j++) {
+        if (samples[j] < minVal) minVal = samples[j];
+        if (samples[j] > maxVal) maxVal = samples[j];
+      }
+
+     double time = static_cast<double>(i) / sampleRate;
+      file << time << "," << minVal << "," << maxVal << "," << i << "\n";
     }
 
     // Close the file
