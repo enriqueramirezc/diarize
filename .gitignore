@@ -3,3 +3,4 @@ test/
 bin/
 build/
 .DS_Store
+output/
